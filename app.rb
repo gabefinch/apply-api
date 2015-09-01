@@ -16,7 +16,7 @@ body = JSON.generate({
   last_name: "Finch",
   email: "gabefinch@gmail.com",
   position_id: "JS",
-  explanation: "Ruby script, Base64 from web based converter.",
+  explanation: "Ruby script",
   projects: [
       "https://github.com/gabefinch/answer-me",
       "http://vast-shore-5799.herokuapp.com/",
