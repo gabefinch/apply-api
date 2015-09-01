@@ -2,13 +2,16 @@ require 'net/http'
 require 'json'
 require 'base64'
 
-uri = URI('http://api.perka.com/1/communication/job/apply')
-req = Net::HTTP::Post.new(uri)
-req.content_type = 'application/json'
+uri = URI.parse('https://api.perka.com/1/communication/job/apply')
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = true
+
+json_headers = {"Content-Type" => "application/json",
+                "Accept" => "application/json"}
 
 resume = File.binread("one_page_resume.pdf")
 coded_resume = Base64.encode64(resume)
-req.body = JSON.generate({
+body = JSON.generate({
   first_name: "Gabe",
   last_name: "Finch",
   email: "gabefinch@gmail.com",
@@ -26,10 +29,9 @@ req.body = JSON.generate({
   resume: coded_resume
 })
 
-res = Net::HTTP.start(uri.hostname, uri.port) do |http|
- http.request(req)
-end
+response = http.post(uri.path, body, json_headers)
 
-puts res.code       # => '200'
-puts res.message    # => 'OK'
-puts res.class.name # => 'HTTPOK'
+
+puts response.code       # => '200'
+puts response.message    # => 'OK'
+puts response.class.name # => 'HTTPOK'
